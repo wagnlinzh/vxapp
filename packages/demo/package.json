@@ -10,9 +10,6 @@
   "homepage": "https://github.com/song940/vxapp/tree/master/packages/demo#readme",
   "license": "MIT",
   "main": "src/app.js",
-  "files": [
-    "lib"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/song940/vxapp.git"
