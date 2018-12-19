@@ -37,7 +37,7 @@ const build = async (source = 'src', target = 'dist') => {
     await wxss.compile(Object.assign({}, options, { current: path.resolve(source, `${entry}.wxss`) }));
     writeJSONFile(path.join(target, `${entry}.json`), page);
   });
-  await writeJSONFile(path.join(target, `app.json`), page);
+  await writeJSONFile(path.join(target, `app.json`), app);
   await wxjs.compile(Object.assign({}, options, { current: path.resolve(source, `app.js`) }));
 };
 
