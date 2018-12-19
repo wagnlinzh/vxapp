@@ -8,9 +8,8 @@ const program = require('../lib/program');
 const devtools = require('../lib/devtools');
 
 program()
-.command('new', async ({ _: [ name ] }) => {
-  console.log('create vxapp project:', name);
-  await create(name);
+.command('new', async ({ _: [ name ], template = '@vxapp/demo' }) => {
+  await create(name, { template });
 })
 .command('build', async ({ _ }) => {
   const input = _[0] || 'src';
