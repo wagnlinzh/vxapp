@@ -8,8 +8,8 @@ const program = require('../lib/program');
 const devtools = require('../lib/devtools');
 
 program()
-.command('new', async ({ _: [ name ], template = '@vxapp/demo' }) => {
-  await create(name, { template });
+.command('new', async ({ _: [ name ], ...options }) => {
+  await create(name, options);
 })
 .command('build', async ({ _ }) => {
   const input = _[0] || 'src';
@@ -64,6 +64,7 @@ program()
   console.log(' - help');
 })
 .command('version', () => {
-  console.log('');
+  const pkg = require('../package.json');
+  console.log(pkg.version);
 })
 .parse();

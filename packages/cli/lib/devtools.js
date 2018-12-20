@@ -1,5 +1,5 @@
 const path = require('path');
-const fs = require('fs-extra');
+const fs = require('fs');
 const { promisify } = require('util');
 const { exec } = require('child_process');
 const { MINA } = require('wechat-lite');
@@ -13,9 +13,26 @@ const profile = path.join(APP_DIR, 'profile');
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 
-fs.ensureDirSync(APP_DIR);
+const mkdir = promisify(fs.mkdir);
+const exists = promisify(fs.exists);
+const readFile = promisify(fs.readFile);
+const writeFile = promisify(fs.writeFile);
 
-const save = session => {
+const ensureDir = async dir => {
+  const paths = [];
+  dir.split(path.sep).reduce((prev, cur) => {
+    const result = path.join(prev, cur);
+    paths.push(result);
+    return result;
+  }, path.sep);
+  for(const cur of paths){
+    const isExists = await exists(cur);
+    !isExists && await mkdir(cur);
+  }
+};
+
+const save = async session => {
+  await ensureDir(APP_DIR);
   return writeFile(profile, JSON.stringify(session));
 };
 
@@ -65,6 +82,7 @@ const getCode = ({ print }) => new Promise((resolve, reject) => {
 });
 
 devtools.pack = project => MINA.pack(project);
+devtools.unpack = (project, to) => MINA.unpack(project, to);
 devtools.requireLogin = async ({ print, force } = {}) => {
   const session = await restore();
   if(!force && session){
