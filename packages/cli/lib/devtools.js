@@ -1,6 +1,7 @@
-const fs = require('fs-extra');
 const path = require('path');
+const fs = require('fs-extra');
 const { promisify } = require('util');
+const { exec } = require('child_process');
 const { MINA } = require('wechat-lite');
 const { HOME } = process.env;
 const root = process.cwd();
@@ -39,7 +40,10 @@ const getAppId = () => {
   return pkg.appid;
 };
 
-const getCode = () => new Promise((resolve, reject) => {
+const run = promisify(exec);
+const open = link => run(`open ${link} &`);
+
+const getCode = ({ print }) => new Promise((resolve, reject) => {
   devtools.qrconnect({
     redirect_uri: 'https://mp.weixin.qq.com/xxx'
   }, async (err, res) => {
@@ -47,7 +51,11 @@ const getCode = () => new Promise((resolve, reject) => {
     const { state, qrcode, code } = res;
     switch(state){
       case 0:
-        console.log('qrcode:', qrcode);
+        if(print){
+          console.log('qrcode:', qrcode);
+        }else{
+          open(qrcode);
+        }
         break;
       case 405:
         resolve(code);
@@ -57,14 +65,15 @@ const getCode = () => new Promise((resolve, reject) => {
 });
 
 devtools.pack = project => MINA.pack(project);
-devtools.requireLogin = async ({ force } = {}) => {
+devtools.requireLogin = async ({ print, force } = {}) => {
   const session = await restore();
   if(!force && session){
     devtools.appid = getAppId();
     return Object.assign(devtools, session);
   }
-  const code = await getCode();
+  const code = await getCode({ print });
   const user = await devtools.login(code);
+  console.log(`[@vxapp/cli] login success, welcome "${user.nickname}"`);
   return save(user);
 };
 

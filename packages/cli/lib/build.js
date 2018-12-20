@@ -7,14 +7,30 @@ const wxss = require('@vxapp/wxss');
 const wxjs = require('@vxapp/wxjs');
 
 const root = process.cwd();
+const mkdir = promisify(fs.mkdir);
+const exists = promisify(fs.exists);
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 const readJSONFile = (filename, encoding = 'utf8') => 
   readFile(filename, encoding).then(JSON.parse);
 
-const writeJSONFile = (filename, page) => {
+const writeJSONFile = async (filename, page) => {
+  await ensureDir(path.dirname(filename));
   console.log('[@vxapp/json] write file:', filename);
   return writeFile(filename, JSON.stringify(page));
+};
+
+const ensureDir = async dir => {
+  const paths = [];
+  dir.split(path.sep).reduce((prev, cur) => {
+    const result = path.join(prev, cur);
+    paths.push(result);
+    return result;
+  }, path.sep);
+  for(const cur of paths){
+    const isExists = await exists(cur);
+    !isExists && await mkdir(cur);
+  }
 };
 
 const createParser = src => {
