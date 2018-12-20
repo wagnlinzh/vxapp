@@ -16,8 +16,8 @@ program()
   const output = _[1] || 'dist';
   await build(input, output);
 })
-.command('login', async ({ force = true }) => {
-  await devtools.requireLogin({ force });
+.command('login', async ({ print, force = true }) => {
+  await devtools.requireLogin({ print, force });
 })
 .command('preview', async ({ _, path: startPath }) => {
   await devtools.requireLogin();
