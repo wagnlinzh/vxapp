@@ -1,6 +1,6 @@
 {
   "name": "@vxapp/cli",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "the command line tool for vxapp",
   "author": "Lsong <song940@gmail.com>",
   "homepage": "https://github.com/song940/vxapp/tree/master/packages/cli#readme",
@@ -20,9 +20,9 @@
     "url": "https://github.com/song940/vxapp/issues"
   },
   "dependencies": {
-    "@vxapp/wxjs": "^0.0.10",
-    "@vxapp/wxml": "^0.0.10",
-    "@vxapp/wxss": "^0.0.9",
+    "@vxapp/wxjs": "^0.0.11",
+    "@vxapp/wxml": "^0.0.11",
+    "@vxapp/wxss": "^0.0.10",
     "adm-zip": "^0.4.13",
     "fs-extra": "^7.0.1",
     "tar": "^4.4.8",
