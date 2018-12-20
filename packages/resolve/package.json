@@ -1,6 +1,6 @@
 {
   "name": "@vxapp/resolve",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "resolve npm modules",
   "keywords": [
     "vxapp",
